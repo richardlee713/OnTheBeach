@@ -5,5 +5,6 @@ namespace HolidaySearch.DataFetcher.Abstract.Interfaces
     public interface IHolidayDataFetcher
     {
         IEnumerable<FlightDao> GetFlightData();
+        IEnumerable<HotelDao> GetHotelData();
     }
 }

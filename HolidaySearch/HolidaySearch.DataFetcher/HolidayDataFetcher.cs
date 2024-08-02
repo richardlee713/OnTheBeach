@@ -11,5 +11,10 @@ namespace HolidaySearch.DataFetcher
             var flightData = JsonConvert.DeserializeObject<IEnumerable<FlightDao>>(File.ReadAllText("Data/flights.json"));
             return flightData ?? new List<FlightDao>();
         }
+
+        public IEnumerable<HotelDao> GetHotelData()
+        {
+            return new List<HotelDao>();
+        }
     }
 }

@@ -18,5 +18,12 @@ namespace HolidaySearch.Tests
             var flightData = _holidayDataFetcher.GetFlightData();
             Assert.True(flightData.Any());
         }
+
+        [Fact]
+        public void Can_Read_Hotels_Source_File()
+        {
+            var hotelData = _holidayDataFetcher.GetHotelData();
+            Assert.True(hotelData.Any());
+        }
     }
 }
