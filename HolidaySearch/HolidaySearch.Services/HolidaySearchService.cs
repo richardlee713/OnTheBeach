@@ -3,7 +3,6 @@ using HolidaySearch.DataFetcher.Abstract.Interfaces;
 using HolidaySearch.Services.Abstract.Criteria;
 using HolidaySearch.Services.Abstract.DTOs;
 using HolidaySearch.Services.Abstract.Interfaces;
-using System.Security.AccessControl;
 
 namespace HolidaySearch.Services
 {
@@ -27,22 +26,36 @@ namespace HolidaySearch.Services
 
             flightsQuery = ApplyDepartureAirportFilter(flightsQuery, criteria.DepartingFrom);
 
-            var hotelMatches = _hotelData
+            var hotelQuery = _hotelData
                 .Where(h => h.LocalAirports.Contains(criteria.TravellingTo) &&
                     h.Nights == criteria.DurationNights &&
-                    h.ArrivalDate == criteria.DepartureDate);
+                    h.ArrivalDate == criteria.DepartureDate)
+                .AsQueryable();
 
-            var searchResults = MapResults(criteria, flightsQuery, hotelMatches);
+            var searchResults = MapResults(criteria, flightsQuery, hotelQuery);
 
             return searchResults.OrderBy(r => r.TotalPrice);
         }
 
-        private static List<HolidayResultDto> MapResults(HolidaySearchCriteria criteria, IEnumerable<FlightDao> flightMatches, IEnumerable<HotelDao> hotelMatches)
+        private static IQueryable<FlightDao> ApplyDepartureAirportFilter(IQueryable<FlightDao> flightsQuery, DepartureAirportEnum from)
+        {
+            if (from == DepartureAirportEnum.Any) return flightsQuery;
+            if (from == DepartureAirportEnum.AnyLondonAirport)
+            {
+                return flightsQuery.Where(f => f.From == "LGW" || f.From == "LTN");
+            }
+            else
+            {
+                return flightsQuery.Where(f => f.From == Enum.GetName(typeof(DepartureAirportEnum), from));
+            }
+        }
+
+        private static List<HolidayResultDto> MapResults(HolidaySearchCriteria criteria, IEnumerable<FlightDao> matchingFlights, IEnumerable<HotelDao> matchingHotels)
         {
             var searchResults = new List<HolidayResultDto>();
-            foreach (var flight in flightMatches)
+            foreach (var flight in matchingFlights)
             {
-                foreach (var hotel in hotelMatches)
+                foreach (var hotel in matchingHotels)
                 {
                     var hotelPrice = hotel.PricePerNight * criteria.DurationNights;
 
@@ -62,46 +75,6 @@ namespace HolidaySearch.Services
             }
 
             return searchResults;
-        }
-
-        private static List<string> GetDepartureAirports(HolidaySearchCriteria criteria)
-        {
-            var departingFrom = new List<string>();
-
-            switch (criteria.DepartingFrom)
-            {
-                case DepartureAirportEnum.AnyLondonAirport:
-                    break;
-                case DepartureAirportEnum.Any:
-                    break;
-                default:
-                    break;
-            }
-
-            if (criteria.DepartingFrom == DepartureAirportEnum.AnyLondonAirport)
-            {
-                departingFrom.Add("LGW");
-                departingFrom.Add("LTN");
-            }
-            else
-            {
-                departingFrom.Add(Enum.GetName(typeof(DepartureAirportEnum), criteria.DepartingFrom) ?? "");
-            }
-
-            return departingFrom;
-        }
-
-        private static IQueryable<FlightDao> ApplyDepartureAirportFilter(IQueryable<FlightDao> flightMatches, DepartureAirportEnum from)
-        {
-            if (from == DepartureAirportEnum.Any) return flightMatches;
-            if (from == DepartureAirportEnum.AnyLondonAirport)
-            {
-                return flightMatches.Where(f => f.From == "LGW" || f.From == "LTN");
-            }
-            else
-            {
-                return flightMatches.Where(f => f.From == Enum.GetName(typeof(DepartureAirportEnum), from));
-            }
         }
     }
 }
