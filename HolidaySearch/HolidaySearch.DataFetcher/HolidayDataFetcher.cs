@@ -1,5 +1,6 @@
 ﻿using HolidaySearch.DataFetcher.Abstract.DAOs;
 using HolidaySearch.DataFetcher.Abstract.Interfaces;
+using Newtonsoft.Json;
 
 namespace HolidaySearch.DataFetcher
 {
@@ -7,7 +8,8 @@ namespace HolidaySearch.DataFetcher
     {
         public IEnumerable<FlightDao> GetFlightData()
         {
-            return new List<FlightDao>();
+            var flightData = JsonConvert.DeserializeObject<IEnumerable<FlightDao>>(File.ReadAllText("Data/flights.json"));
+            return flightData ?? new List<FlightDao>();
         }
     }
 }

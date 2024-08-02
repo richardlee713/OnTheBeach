@@ -13,7 +13,7 @@ namespace HolidaySearch.Tests
         }
 
         [Fact]
-        public void Can_Read_Source_Files()
+        public void Can_Read_Flights_Source_File()
         {
             var flightData = _holidayDataFetcher.GetFlightData();
             Assert.True(flightData.Any());

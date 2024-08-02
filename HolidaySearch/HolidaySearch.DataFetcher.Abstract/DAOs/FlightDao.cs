@@ -1,4 +1,6 @@
-﻿namespace HolidaySearch.DataFetcher.Abstract.DAOs
+﻿using Newtonsoft.Json;
+
+namespace HolidaySearch.DataFetcher.Abstract.DAOs
 {
     public class FlightDao
     {
@@ -7,6 +9,7 @@
         public string From { get; set; }
         public string To { get; set; }
         public decimal Price { get; set; }
+        [JsonProperty("departure_date")]
         public DateOnly Date { get; set; }
     }
 }
