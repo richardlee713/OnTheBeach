@@ -14,7 +14,8 @@ namespace HolidaySearch.DataFetcher
 
         public IEnumerable<HotelDao> GetHotelData()
         {
-            return new List<HotelDao>();
+            var hotelData = JsonConvert.DeserializeObject<IEnumerable<HotelDao>>(File.ReadAllText("Data/hotels.json"));
+            return hotelData ?? new List<HotelDao>();
         }
     }
 }
