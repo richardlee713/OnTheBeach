@@ -36,9 +36,9 @@ namespace HolidaySearch.Tests
         {
             var searchCriteria = new HolidaySearchCriteria
             {
-                DepartingFrom = "MAN",
+                DepartingFrom = DepartureAirportEnum.Any,
                 TravellingTo = "AGP",
-                DepartureDate = new DateOnly(2023, 7, 1),
+                DepartureDate = new DateOnly(2023, 07, 01),
                 DurationNights = 7
             };
 
