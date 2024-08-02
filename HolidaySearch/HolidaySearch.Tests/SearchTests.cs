@@ -34,7 +34,15 @@ namespace HolidaySearch.Tests
         [Fact]
         public void Can_Run_Holiday_Search()
         {
-            var searchResults = _holidaySearchService.HolidaySearch(new HolidaySearchCriteria());
+            var searchCriteria = new HolidaySearchCriteria
+            {
+                DepartingFrom = "MAN",
+                TravellingTo = "AGP",
+                DepartureDate = new DateOnly(2023, 7, 1),
+                DurationNights = 7
+            };
+
+            var searchResults = _holidaySearchService.HolidaySearch(searchCriteria).ToList();
             Assert.True(searchResults.Any());
         }
     }

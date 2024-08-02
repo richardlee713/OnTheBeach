@@ -10,5 +10,6 @@
         public int HotelId { get; set; }
         public string HotelName { get; set; }
         public decimal HotelPrice { get; set; }
+        public decimal HotelPricePerNight { get; set; }
     }
 }

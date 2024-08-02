@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HolidaySearch.DataFetcher.Abstract\HolidaySearch.DataFetcher.Abstract.csproj" />
     <ProjectReference Include="..\HolidaySearch.Services.Abstract\HolidaySearch.Services.Abstract.csproj" />
   </ItemGroup>
 
