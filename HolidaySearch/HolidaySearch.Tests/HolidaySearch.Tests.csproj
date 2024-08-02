@@ -23,6 +23,8 @@
   <ItemGroup>
     <ProjectReference Include="..\HolidaySearch.DataFetcher.Abstract\HolidaySearch.DataFetcher.Abstract.csproj" />
     <ProjectReference Include="..\HolidaySearch.DataFetcher\HolidaySearch.DataFetcher.csproj" />
+    <ProjectReference Include="..\HolidaySearch.Services.Abstract\HolidaySearch.Services.Abstract.csproj" />
+    <ProjectReference Include="..\HolidaySearch.Services\HolidaySearch.Services.csproj" />
   </ItemGroup>
 
 </Project>
