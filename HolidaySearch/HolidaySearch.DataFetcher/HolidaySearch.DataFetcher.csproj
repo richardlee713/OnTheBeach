@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HolidaySearch.DataFetcher.Abstract\HolidaySearch.DataFetcher.Abstract.csproj" />
+  </ItemGroup>
+
 </Project>
