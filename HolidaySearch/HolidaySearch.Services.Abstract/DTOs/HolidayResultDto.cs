@@ -11,5 +11,6 @@
         public string HotelName { get; set; }
         public decimal HotelPrice { get; set; }
         public decimal HotelPricePerNight { get; set; }
+        public int Duration { get; set; }
     }
 }

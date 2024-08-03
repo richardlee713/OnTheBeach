@@ -3,6 +3,7 @@ using HolidaySearch.DataFetcher.Abstract.Interfaces;
 using HolidaySearch.Services.Abstract.Criteria;
 using HolidaySearch.Services.Abstract.DTOs;
 using HolidaySearch.Services.Abstract.Interfaces;
+using HolidaySearch.Services.Mappers;
 
 namespace HolidaySearch.Services
 {
@@ -32,9 +33,9 @@ namespace HolidaySearch.Services
                     h.ArrivalDate == criteria.DepartureDate)
                 .AsQueryable();
 
-            var searchResults = MapResults(criteria, flightsQuery, hotelQuery);
-
-            return searchResults.OrderBy(r => r.TotalPrice);
+            return HolidaySearchMapper.MapResults(flightsQuery, hotelQuery)
+                .CalculatePrices()
+                .OrderBy(r => r.TotalPrice);
         }
 
         private static IQueryable<FlightDao> ApplyDepartureAirportFilter(IQueryable<FlightDao> flightsQuery, DepartureAirportEnum from)
@@ -48,33 +49,6 @@ namespace HolidaySearch.Services
             {
                 return flightsQuery.Where(f => f.From == Enum.GetName(typeof(DepartureAirportEnum), from));
             }
-        }
-
-        private static List<HolidayResultDto> MapResults(HolidaySearchCriteria criteria, IEnumerable<FlightDao> matchingFlights, IEnumerable<HotelDao> matchingHotels)
-        {
-            var searchResults = new List<HolidayResultDto>();
-            foreach (var flight in matchingFlights)
-            {
-                foreach (var hotel in matchingHotels)
-                {
-                    var hotelPrice = hotel.PricePerNight * hotel.Nights;
-
-                    searchResults.Add(new HolidayResultDto
-                    {
-                        DepartingFrom = flight.From,
-                        FlightId = flight.Id,
-                        FlightPrice = flight.Price,
-                        HotelId = hotel.Id,
-                        HotelName = hotel.Name,
-                        HotelPrice = hotelPrice,
-                        TravellingTo = flight.To,
-                        HotelPricePerNight = hotel.PricePerNight,
-                        TotalPrice = hotelPrice + flight.Price
-                    });
-                }
-            }
-
-            return searchResults;
         }
     }
 }
