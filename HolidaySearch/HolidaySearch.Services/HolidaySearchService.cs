@@ -57,7 +57,7 @@ namespace HolidaySearch.Services
             {
                 foreach (var hotel in matchingHotels)
                 {
-                    var hotelPrice = hotel.PricePerNight * criteria.DurationNights;
+                    var hotelPrice = hotel.PricePerNight * hotel.Nights;
 
                     searchResults.Add(new HolidayResultDto
                     {
